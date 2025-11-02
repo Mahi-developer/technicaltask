@@ -141,7 +141,6 @@ class GeminiConnector:
     async def process_request(self, prompt, data=None):
         try:
             logger.info("Processing GEN AI request with Gemini...")
-            logger.debug("GEN AI Prompt - %s", prompt)
             contents = [prompt]
             contents.append(data) if data else ...
             response = await self.client.models.generate_content(
@@ -152,7 +151,7 @@ class GeminiConnector:
             if 'error' in response:
                 return False, response
 
-            logger.info("Successfully processed the Gemini request response - %s", response)
+            logger.info("Successfully processed the w2 form.")
             return True, response
         except Exception as error:
             logger.exception("Error occurred while processing the GEN AI request")

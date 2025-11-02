@@ -159,14 +159,15 @@ LOGGING = {
             "formatter": "verbose",
         },
     },
-    "loggers": {
-        "": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
+}
+LOGGERS = {
+    "": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+        "propagate": True,
     },
 }
+
 
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 BROKER_BACKEND_URL = f"redis://{REDIS_HOST}:6379/0"
@@ -190,3 +191,4 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+LOGGING["loggers"] = LOGGERS

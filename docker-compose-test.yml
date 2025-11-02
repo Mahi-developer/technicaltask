@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    container_name: app
+    command: uvicorn task.asgi:application --host 0.0.0.0 --port 8000 --reload
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - CURR_ENV=test
+    env_file:
+      - .env
+
+  w2_worker:
+    build: .
+    container_name: w2_worker
+    command: taskiq worker app.workers:broker --max-async-tasks=20 --wait-tasks-timeout=120
+    restart: always
+    volumes:
+      - .:/app
+    environment:
+      - CURR_ENV=test
+    env_file:
+      - .env

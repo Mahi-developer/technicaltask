@@ -5,6 +5,7 @@ import uuid
 import logging
 import aiofiles
 
+from django.core import exceptions
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from task.settings import TMP_DIR
@@ -59,8 +60,10 @@ class W2Intelligence(View):
             )
             if not job_id:
                 return invalid_resp
-            
-            job = await JobTracker.objects.filter(id=job_id).afirst()
+            try:
+                job = await JobTracker.objects.filter(id=job_id).afirst()
+            except exceptions.ValidationError:
+                return invalid_resp
             if job:
                 logger.info("Successfully fetched job details - %s", job)
                 return form_json_response(job.status, status_code=200, addl_resp=job.to_dict())
