@@ -1,6 +1,9 @@
 import uuid
+import json
+import copy
 from django.db import models
 from django.utils import timezone
+from django.utils.functional import cached_property
 
 class JobTracker(models.Model):
     """
@@ -20,10 +23,36 @@ class JobTracker(models.Model):
     finished_at = models.DateTimeField(null=True)
     created_dtm = models.DateTimeField(auto_now_add=True)
     modified_dtm = models.DateTimeField(auto_now=True)
-    task_result = models.TextField(null=True)
+    _task_result = models.JSONField(null=True, db_column="task_result")
 
     class Meta:
         db_table = "job_tracker"
+        
+    MASKED_KEYS = ["employee_info.ssn", "employer_info.ein"]
+
+    @staticmethod
+    def _mask_nested_keys(key, data):
+        nested_keys = key.split(".")
+        _d = data
+        for curr_key in nested_keys:
+            if curr_key not in _d:
+                break
+            if isinstance(_d[curr_key], dict):
+                _d = _d[curr_key]
+            else:
+                val = _d[curr_key]
+                _d[curr_key] = "*" * (len(val) - 4) + val[-4:]
+
+    @cached_property
+    def task_result(self):
+        """Return masked details for app-level access."""
+        data = {}
+        if self._task_result:
+            data = copy.deepcopy(self._task_result)
+            data = json.loads(self._task_result)
+            for key in self.MASKED_KEYS:
+                self._mask_nested_keys(key, data)
+        return data
 
     async def amark(self, status: str, **fields):
         """
@@ -41,4 +70,17 @@ class JobTracker(models.Model):
         await self.asave(update_fields=["status", "started_at", "finished_at", *fields.keys()])
 
     def __str__(self):
-        return f"{self.name} ({self.status})"
+        return f"{self.id} ({self.status})"
+    
+    def to_dict(self):
+        result = self.task_result or {}
+        return {
+            "status": self.status,
+            "meta": {
+                "job_id": self.id.hex,
+                "created_time": self.created_dtm,
+                "start_time": self.started_at,
+                "end_time": self.finished_at
+            },
+            "result": result,
+        }

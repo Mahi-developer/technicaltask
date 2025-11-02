@@ -26,6 +26,13 @@ _Follow the below instructions to setup the task application in any env._
 * Install GIT in your local, if required or download the source code from GIT
   * Download GIT - https://git-scm.com/downloads
 
+#### Generate External API Keys
+* Login to google from any browser, visit the following Google Genai website
+  * Create your Google Gemini API Key - https://aistudio.google.com/api-keys
+* Sign Up with OMDb API for API key, select Free and provide the required details.
+  * SignUp - https://www.omdbapi.com/apikey.aspx
+  * OMDb API Key will be recieved over email, activate the key using the link in the email.
+
 #### Clone Project
 * Ignore this step if you are downloading source code directly from GIT.
 * Repo link - #
@@ -45,7 +52,10 @@ MYSQL_ROOT_PASSWORD=root_pwd
 MYSQL_DATABASE=task_db
 MYSQL_USER=your_user
 MYSQL_PASSWORD=your_pwd
+GEMINI_API_X=your_api_key
+OMDB_API_X=your_api_key
 ```
+
 * Ensue docker & compose is up and running.
 ```bash
 docker ps -a

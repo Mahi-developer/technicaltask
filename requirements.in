@@ -4,3 +4,7 @@ taskiq-redis==1.1.2
 redis==6.4.0
 uvicorn==0.38.0
 mysqlclient==2.2.7
+aiohttp==3.13.2
+aiofiles==25.1.0
+google-genai==1.47.0
+aioredis==2.0.1
