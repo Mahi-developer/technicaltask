@@ -1,0 +1,71 @@
+volumes:
+  mysql_data:
+
+services:
+
+  db:
+    image: mysql:8.0
+    hostname: db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - TZ=UTC
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    build: .
+    container_name: app
+    command: uvicorn task.asgi:application --host 0.0.0.0 --port 8000 --reload
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - CURR_ENV=local
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  w2_worker:
+    build: .
+    container_name: w2_worker
+    command: taskiq worker app.workers:broker --max-async-tasks=10 --wait-tasks-timeout=120
+    restart: always
+    volumes:
+      - .:/app
+    environment:
+      - CURR_ENV=local
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:7.2-alpine
+    hostname: redis
+    container_name: redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s

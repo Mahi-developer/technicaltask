@@ -1,0 +1,6 @@
+django==5.2.7
+taskiq==0.11.20
+taskiq-redis==1.1.2
+redis==6.4.0
+uvicorn==0.38.0
+mysqlclient==2.2.7
