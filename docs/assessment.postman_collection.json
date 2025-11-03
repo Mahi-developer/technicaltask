@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "ddaf125a-45a6-46ea-946c-b3a718dd77fe",
+		"name": "assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16746280"
+	},
+	"item": [
+		{
+			"name": "external",
+			"item": [
+				{
+					"name": "OMDB Search",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{OMDB_URL}}?s=Spider+Man&page=1&type=movie&apikey={{API_KEY}}",
+							"host": [
+								"{{OMDB_URL}}"
+							],
+							"query": [
+								{
+									"key": "s",
+									"value": "Spider+Man"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "type",
+									"value": "movie"
+								},
+								{
+									"key": "apikey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OMDB GET by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{OMDB_URL}}?i=tt9179430&type=movie&apikey={{API_KEY}}",
+							"host": [
+								"{{OMDB_URL}}"
+							],
+							"query": [
+								{
+									"key": "i",
+									"value": "tt9179430"
+								},
+								{
+									"key": "type",
+									"value": "movie"
+								},
+								{
+									"key": "apikey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/ping",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "W2 Intelligence POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/balaji/Desktop/Mahesh/assessment/sample-forms/2024-Form-W-2-1.webp"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}/api/w2",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"w2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "W2 Intelligence GET",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/w2/{{JOB_ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"w2",
+						"{{JOB_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Movies Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/movies?q=Matrix&page=1",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"movies"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "Matrix"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "OMDB_URL",
+			"value": "https://www.omdbapi.com/"
+		},
+		{
+			"key": "URL",
+			"value": "http://localhost:8000"
+		}
+	]
+}

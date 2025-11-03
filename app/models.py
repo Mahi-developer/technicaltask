@@ -5,20 +5,23 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 
+
 class JobTracker(models.Model):
     """
     Stores background job details — status, timing, and result/exception info.
     """
 
     class Status(models.TextChoices):
-        QUEUED = "QUEUED", "Pending"
+        QUEUED = "QUEUED", "Queued"
         IN_PROGRESS = "IN_PROGRESS", "In-Progress"
         SUCCESS = "SUCCESS", "Success"
         FAILED = "FAILED", "Failed"
         CANCELLED = "CANCELLED", "Cancelled"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.QUEUED)
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.QUEUED
+    )
     started_at = models.DateTimeField(null=True)
     finished_at = models.DateTimeField(null=True)
     created_dtm = models.DateTimeField(auto_now_add=True)
@@ -27,7 +30,7 @@ class JobTracker(models.Model):
 
     class Meta:
         db_table = "job_tracker"
-        
+
     MASKED_KEYS = ["employee_info.ssn", "employer_info.ein"]
 
     @staticmethod
@@ -41,7 +44,7 @@ class JobTracker(models.Model):
                 _d = _d[curr_key]
             else:
                 val = _d[curr_key]
-                _d[curr_key] = "*" * (len(val) - 4) + val[-4:]
+                _d[curr_key] = "X" * (len(val) - 4) + val[-4:]
 
     @cached_property
     def task_result(self):
@@ -67,11 +70,13 @@ class JobTracker(models.Model):
         for key, value in fields.items():
             setattr(self, key, value)
 
-        await self.asave(update_fields=["status", "started_at", "finished_at", *fields.keys()])
+        await self.asave(
+            update_fields=["status", "started_at", "finished_at", *fields.keys()]
+        )
 
     def __str__(self):
         return f"{self.id} ({self.status})"
-    
+
     def to_dict(self):
         result = self.task_result or {}
         return {
@@ -80,7 +85,7 @@ class JobTracker(models.Model):
                 "job_id": self.id.hex,
                 "created_time": self.created_dtm,
                 "start_time": self.started_at,
-                "end_time": self.finished_at
+                "end_time": self.finished_at,
             },
             "result": result,
         }

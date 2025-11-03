@@ -35,11 +35,14 @@ W2_RESPONSE_FORMAT = '''{
         "Insight 1...",
         "Insight 2..."
     ],
-    "quality_assessment": {
+    "model_assessment": {
         "average_confidence": 0,  # confidence score, sample - 0.94
         "warnings": [
             "Warning 1...", "Warning 2..."
         ],  # sample - "Box 14 partially unreadable", "State code missing"
+        "missing_fields": [
+            "Missing / Empty field or box", 
+        ],  # exact required fields empty / missing in w2 form
         "overall_quality": ""  # Sample - "High", "Medium", "Low" based on the confidence
     },
 }'''
@@ -84,6 +87,7 @@ Quality & Confidence Notes
     * Average OCR confidence per section
     * Overall document clarity assessment (e.g., “High confidence; all fields legible” or “Low confidence; text partially cut off near Box 12”)
     * List of all warnings or uncertain extractions
+    * List of all missing or empty fields as per W2 Form
 Invalid File - return response in the given Error Response format
     * If the no file recieved / input file is other than w2 form.  
     * If receieved w2 form is an empty form (not filled).

@@ -8,23 +8,43 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='JobTracker',
+            name="JobTracker",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('status', models.CharField(choices=[('QUEUED', 'Pending'), ('IN_PROGRESS', 'In-Progress'), ('SUCCESS', 'Success'), ('FAILED', 'Failed'), ('CANCELLED', 'Cancelled')], default='QUEUED', max_length=20)),
-                ('started_at', models.DateTimeField(null=True)),
-                ('finished_at', models.DateTimeField(null=True)),
-                ('created_dtm', models.DateTimeField(auto_now_add=True)),
-                ('modified_dtm', models.DateTimeField(auto_now=True)),
-                ('_task_result', models.JSONField(db_column='task_result', null=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("QUEUED", "Queued"),
+                            ("IN_PROGRESS", "In-Progress"),
+                            ("SUCCESS", "Success"),
+                            ("FAILED", "Failed"),
+                            ("CANCELLED", "Cancelled"),
+                        ],
+                        default="QUEUED",
+                        max_length=20,
+                    ),
+                ),
+                ("started_at", models.DateTimeField(null=True)),
+                ("finished_at", models.DateTimeField(null=True)),
+                ("created_dtm", models.DateTimeField(auto_now_add=True)),
+                ("modified_dtm", models.DateTimeField(auto_now=True)),
+                ("_task_result", models.JSONField(db_column="task_result", null=True)),
             ],
             options={
-                'db_table': 'job_tracker',
+                "db_table": "job_tracker",
             },
         ),
     ]
