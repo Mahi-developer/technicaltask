@@ -91,7 +91,7 @@ python manage.py migrate
 
 #### Test application with the postman collection included.
 * Included the postman collection (docs/assessment.postman_collection.json).
-* Import the collection in the postman app and try to create events and register attendees.
+* Import the collection in the postman app and try W2 Processing & Movies Search API.
 
 #### Task routes (local).
 * Ping - http://localhost:8000/api/ping/
