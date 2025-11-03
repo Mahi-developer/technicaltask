@@ -90,7 +90,7 @@ python manage.py migrate
 ```
 
 #### Test application with the postman collection included.
-* Included the postman collection (task.postman_collection.json).
+* Included the postman collection (docs/assessment.postman_collection.json).
 * Import the collection in the postman app and try to create events and register attendees.
 
 #### Task routes (local).
