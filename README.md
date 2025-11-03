@@ -59,23 +59,23 @@ OMDB_API_X=your_api_key
 * Ensue docker & compose is up and running.
 ```bash
 docker ps -a
-docker-compose -f docker-compose.yml ps -a
+docker compose -f docker-compose.yml ps -a
 ```
 * Build Task application
 ```bash
-docker-compose -f docker-compose.yml build --no-cache
+docker compose -f docker-compose.yml build --no-cache
 ```
 * Start all the containers and verify its up and running
 ```bash
-docker-compose -f docker-compose.yml up -d
+docker compose -f docker-compose.yml up -d
 # check application status
-docker-compose -f docker-compose.yml ps -a 
+docker compose -f docker-compose.yml ps -a 
 ```
 
 #### Create User and DB as per your requirements.
 * Login to mysql, Refer user, password and host in env
 ```bash
-docker-compose -f docker-compose.yml exec db bash
+docker compose -f docker-compose.yml exec db bash
 psql -U <username> -h <host_name> -d <db_name> 
 ```
 * Create additional user & DB if required.
@@ -84,7 +84,7 @@ psql -U <username> -h <host_name> -d <db_name>
 #### Apply initial migrations
 * apply initial migrations with the following migrate command
 ```bash
-docker-compose -f docker-compose.yml exec app bash
+docker compose -f docker-compose.yml exec app bash
 # migration command
 python manage.py migrate
 ```
@@ -104,8 +104,23 @@ python manage.py migrate
   (not required as initial migrations are already done)
 * Follow upgrade command mentioned above to reflect the changes in db
 ```bash
-docker-compose -f docker-compose.yml exec app bash 
+docker compose -f docker-compose.yml exec app bash 
 python manage.py makemigrations
 ```
 ------
+
+#### To run tests in local
+* execture the following commands inside the container
+  ```bash
+  docker compose -f docker-compose.yml exec app bash
+  ```
+* Install test required dependencies
+  ```bash
+  pip install test_requirements.txt
+  ```
+* Run Unit tests
+  ```bash
+  coverage run -m pytest tests/
+  ```
+
 ### Hooray! You've Made it 😅
